@@ -2,7 +2,7 @@
 
 Gestionale enologico completo per cantina vinicola.
 
-**Accedi:** https://TUO-USERNAME.github.io/cantinapp
+**Accedi:** https://CANTINARUBIU.github.io/cantinapp
 
 ## Funzionalità
 - Fatturazione elettronica FatturaPA / SDI
