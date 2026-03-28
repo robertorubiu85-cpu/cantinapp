@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CantinApp — Accesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #1C0A03;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+}
+.logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.logo h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #D4A84B;
+  letter-spacing: 1px;
+}
+.logo p {
+  font-size: 11px;
+  color: rgba(212,168,75,0.45);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.tabs {
+  display: flex;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 1.5rem;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+  user-select: none;
+}
+.tab.active {
+  background: rgba(212,168,75,0.2);
+  color: #D4A84B;
+  font-weight: 500;
+}
+.msg {
+  display: none;
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  line-height: 1.5;
+}
+.msg.err { background: rgba(239,68,68,0.15); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+.msg.ok  { background: rgba(34,197,94,0.15);  color: #86EFAC; border: 1px solid rgba(34,197,94,0.3); }
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(212,168,75,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+}
+input {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 11px 13px;
+  color: white;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 1rem;
+}
+input:focus { border-color: rgba(212,168,75,0.6); }
+input::placeholder { color: rgba(255,255,255,0.25); }
+.btn-primary {
+  width: 100%;
+  background: #D4A84B;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  color: #1C0A03;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s, opacity 0.15s;
+  margin-top: 0.25rem;
+}
+.btn-primary:hover { background: #E0B55A; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 12px;
+  color: rgba(212,168,75,0.4);
+  cursor: pointer;
+  text-decoration: underline;
+}
+.link:hover { color: rgba(212,168,75,0.7); }
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 10px;
+  color: rgba(255,255,255,0.15);
+}
+.panel { display: none; }
+.panel.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <h1>CantinApp</h1>
+    <p>Gestionale Enologico</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tab-login" onclick="showPanel('login')">Accedi</div>
+    <div class="tab" id="tab-reg" onclick="showPanel('register')">Registrati</div>
+  </div>
+
+  <div id="msg" class="msg"></div>
+
+  <!-- LOGIN -->
+  <div id="panel-login" class="panel active">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="la-tua@cantina.it" autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="pwd" placeholder="••••••••" autocomplete="current-password">
+    <button class="btn-primary" id="btn-login">Accedi</button>
+    <div class="link" onclick="showPanel('reset')">Password dimenticata?</div>
+  </div>
+
+  <!-- REGISTRAZIONE -->
+  <div id="panel-register" class="panel">
+    <label>Email</label>
+    <input type="email" id="reg-email" placeholder="la-tua@cantina.it">
+    <label>Password <span style="color:rgba(255,255,255,0.3);font-size:10px">(min. 8 caratteri)</span></label>
+    <input type="password" id="reg-pwd" placeholder="••••••••">
+    <label>Nome cantina</label>
+    <input type="text" id="reg-cantina" placeholder="es. Cantina Rossi srl">
+    <label>Partita IVA</label>
+    <input type="text" id="reg-piva" placeholder="12345678901" maxlength="11">
+    <button class="btn-primary" id="btn-register">Crea account</button>
+  </div>
+
+  <!-- RESET -->
+  <div id="panel-reset" class="panel">
+    <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:1rem;text-align:center">
+      Inserisci la tua email per ricevere il link di recupero
+    </p>
+    <label>Email</label>
+    <input type="email" id="reset-email" placeholder="la-tua@cantina.it">
+    <button class="btn-primary" id="btn-reset">Invia link recupero</button>
+    <div class="link" onclick="showPanel('login')">← Torna al login</div>
+  </div>
+
+  <div class="footer">🔒 Dati protetti · Supabase EU · sazwtynhphwagxouxnno</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPA_URL = 'https://sazwtynhphwagxouxnno.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhend0eW5ocGh3YWd4b3V4bm5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NTg3OTIsImV4cCI6MjA4OTQzNDc5Mn0.BwqahZ7B-y_f2eqV_npuScFmfkCYLH-_IyjRQ089oaM';
+var APP_URL  = 'index.html'; // dove reindirizzare dopo login
+
+var db = null;
+
+// ── HELPERS ──────────────────────────────────
+
+function showPanel(name) {
+  ['login','register','reset'].forEach(function(n) {
+    document.getElementById('panel-' + n).classList.remove('active');
+    var tab = document.getElementById('tab-' + (n === 'register' ? 'reg' : n));
+    if (tab) {
+      tab.classList.remove('active');
+    }
+  });
+  document.getElementById('panel-' + name).classList.add('active');
+  var activeTab = document.getElementById('tab-' + (name === 'register' ? 'reg' : name));
+  if (activeTab) activeTab.classList.add('active');
+  hideMsg();
+}
+
+function showMsg(text, tipo) {
+  var el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg ' + tipo;
+  el.style.display = 'block';
+}
+
+function hideMsg() {
+  var el = document.getElementById('msg');
+  if (el) { el.style.display = 'none'; el.textContent = ''; }
+}
+
+function setBtn(id, text, disabled) {
+  var btn = document.getElementById(id);
+  if (!btn) return;
+  btn.textContent = text;
+  btn.disabled = !!disabled;
+}
+
+// ── LOGIN ─────────────────────────────────────
+
+function doLogin() {
+  var email = document.getElementById('email').value.trim();
+  var pwd   = document.getElementById('pwd').value;
+
+  if (!email || !pwd) { showMsg('Inserisci email e password', 'err'); return; }
+  if (!db)            { showMsg('Connessione non disponibile — ricarica la pagina', 'err'); return; }
+
+  setBtn('btn-login', 'Accesso in corso…', true);
+  hideMsg();
+
+  db.auth.signInWithPassword({ email: email, password: pwd })
+    .then(function(res) {
+      if (res.error) {
+        setBtn('btn-login', 'Accedi', false);
+        var map = {
+          'Invalid login credentials': 'Email o password non corretti',
+          'Email not confirmed':        'Conferma prima la tua email',
+          'Too many requests':          'Troppi tentativi — riprova tra un minuto'
+        };
+        showMsg(map[res.error.message] || res.error.message, 'err');
+      } else {
+        // Salva sessione e vai all'app
+        showMsg('Accesso effettuato — caricamento…', 'ok');
+        setTimeout(function() {
+          window.location.href = APP_URL;
+        }, 500);
+      }
+    })
+    .catch(function(e) {
+      setBtn('btn-login', 'Accedi', false);
+      showMsg('Errore di rete: ' + e.message, 'err');
+    });
+}
+
+// ── REGISTRAZIONE ────────────────────────────
+
+function doRegister() {
+  var email   = document.getElementById('reg-email').value.trim();
+  var pwd     = document.getElementById('reg-pwd').value;
+  var cantina = document.getElementById('reg-cantina').value.trim();
+  var piva    = document.getElementById('reg-piva').value.trim();
+
+  if (!email)          { showMsg('Inserisci la tua email', 'err'); return; }
+  if (!pwd || pwd.length < 8) { showMsg('Password di almeno 8 caratteri', 'err'); return; }
+  if (!cantina)        { showMsg('Inserisci il nome della cantina', 'err'); return; }
+  if (!db)             { showMsg('Connessione non disponibile', 'err'); return; }
+
+  setBtn('btn-register', 'Creazione in corso…', true);
+  hideMsg();
+
+  db.auth.signUp({
+    email: email,
+    password: pwd,
+    options: { data: { cantina: cantina, piva: piva } }
+  }).then(function(res) {
+    setBtn('btn-register', 'Crea account', false);
+    if (res.error) {
+      var map = { 'User already registered': 'Esiste già un account con questa email' };
+      showMsg(map[res.error.message] || res.error.message, 'err');
+    } else if (res.data.session) {
+      // Conferma email disabilitata — accesso diretto
+      showMsg('Account creato! Caricamento…', 'ok');
+      setTimeout(function() { window.location.href = APP_URL; }, 500);
+    } else {
+      showMsg('✓ Account creato! Controlla la tua email per confermare, poi accedi.', 'ok');
+      setTimeout(function() { showPanel('login'); }, 2000);
+    }
+  }).catch(function(e) {
+    setBtn('btn-register', 'Crea account', false);
+    showMsg('Errore: ' + e.message, 'err');
+  });
+}
+
+// ── RESET PASSWORD ────────────────────────────
+
+function doReset() {
+  var email = document.getElementById('reset-email').value.trim();
+  if (!email) { showMsg('Inserisci la tua email', 'err'); return; }
+  if (!db)    { showMsg('Connessione non disponibile', 'err'); return; }
+
+  setBtn('btn-reset', 'Invio in corso…', true);
+  hideMsg();
+
+  db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/' + APP_URL
+  }).then(function(res) {
+    setBtn('btn-reset', 'Invia link recupero', false);
+    if (res.error) showMsg(res.error.message, 'err');
+    else showMsg('✓ Email inviata — controlla la posta e lo spam', 'ok');
+  }).catch(function(e) {
+    setBtn('btn-reset', 'Invia link recupero', false);
+    showMsg('Errore: ' + e.message, 'err');
+  });
+}
+
+// ── INIT ──────────────────────────────────────
+
+function init() {
+  // Inizializza Supabase
+  if (!window.supabase) {
+    setTimeout(init, 200);
+    return;
+  }
+  db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+  // Se c'è già una sessione valida, vai direttamente all'app
+  db.auth.getSession().then(function(res) {
+    if (res.data && res.data.session) {
+      window.location.href = APP_URL;
+    }
+  });
+
+  // Collega pulsanti
+  document.getElementById('btn-login').addEventListener('click', doLogin);
+  document.getElementById('btn-register').addEventListener('click', doRegister);
+  document.getElementById('btn-reset').addEventListener('click', doReset);
+
+  // Enter su password
+  document.getElementById('pwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  document.getElementById('reg-pwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doRegister();
+  });
+}
+
+// Avvia
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
